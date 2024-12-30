@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: guigz <guigz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/30 00:24:09 by guigz             #+#    #+#             */
-/*   Updated: 2024/12/30 01:35:13 by guigz            ###   ########.fr       */
+/*   Created: 2024/12/30 01:37:25 by guigz             #+#    #+#             */
+/*   Updated: 2024/12/30 01:41:28 by guigz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*line_extractor(char *stash)
 {
@@ -69,31 +69,31 @@ static char	*extract_join_and_update(char *stash, char *line)
 	return (line);
 }
 
-char	*get_next_line(int fd)
+char *get_next_line(int fd)
 {
-	static char	stash[BUFFER_SIZE + 1];
-	char		*line;
-	int			readreturn;
+    static char stash[512][BUFFER_SIZE + 1];
+    char *line;
+    int readreturn;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	line = NULL;
-	while (stash[0] || !line || !ft_strchr(line, '\n'))
-	{
-		if (!stash[0])
-		{
-			readreturn = read(fd, stash, BUFFER_SIZE);
-			if (readreturn <= 0)
-			{
-				if (readreturn == 0)
-					return (line);
-				return (free(line), NULL);
-			}
-			stash[readreturn] = '\0';
-		}
-		line = extract_join_and_update(stash, line);
-		if (line && ft_strchr(line, '\n'))
-			break ;
-	}
-	return (line);
+    if (fd < 0 || fd >= 512 || BUFFER_SIZE <= 0)
+        return (NULL);
+    line = NULL;
+    while (stash[fd][0] || !line || !ft_strchr(line, '\n'))
+    {
+        if (!stash[fd][0])
+        {
+            readreturn = read(fd, stash[fd], BUFFER_SIZE);
+            if (readreturn <= 0)
+            {
+                if (readreturn == 0)
+                    return (line);
+                return (free(line), NULL);
+            }
+            stash[fd][readreturn] = '\0';
+        }
+        line = extract_join_and_update(stash[fd], line);
+        if (line && ft_strchr(line, '\n'))
+            break;
+    }
+    return (line);
 }
