@@ -6,7 +6,7 @@
 /*   By: gbehra <gbehra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 01:37:25 by guigz             #+#    #+#             */
-/*   Updated: 2024/12/30 11:14:00 by gbehra           ###   ########.fr       */
+/*   Updated: 2024/12/30 14:21:35 by gbehra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			readreturn;
 
-	if (fd < 0 || fd >= 512 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 420 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = NULL;
 	while (stash[fd][0] || !line || !ft_strchr(line, '\n'))
